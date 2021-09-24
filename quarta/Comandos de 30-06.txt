@@ -1,0 +1,87 @@
+CREATE TABLE Produtos
+(
+	Codigo CHAR(3) NOT NULL PRIMARY KEY,
+	Descricao VARCHAR(50) UNIQUE,
+	Estoque	INT NOT NULL DEFAULT 0
+);
+
+
+INSERT INTO Produtos VALUES ('001', 'Feijão', 10);
+INSERT INTO Produtos VALUES ('002', 'Arroz', 5);
+INSERT INTO Produtos VALUES ('003', 'Farinha', 15);
+
+
+CREATE TABLE Movimentacao
+(
+   Codigo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   Tipo_Movimento CHAR(1),
+   Produto CHAR(3),
+   Quantidade	INT
+);
+
+	
+INSERT INTO movimentacao (tipo_movimento, produto, quantidade) VALUES ('C','002',50);
+INSERT INTO movimentacao (tipo_movimento, produto, quantidade) VALUES ('V','002',10);
+
+
+
+DELIMITER $
+CREATE TRIGGER t_movimentacao_insert AFTER INSERT ON movimentacao
+FOR EACH ROW BEGIN
+    IF NEW.tipo_movimento = 'C' THEN
+        UPDATE produtos SET estoque = estoque + NEW.quantidade WHERE codigo = NEW.produto;
+    ELSE
+        UPDATE produtos SET estoque = estoque - NEW.quantidade WHERE codigo = NEW.produto;
+    END IF;
+END $
+DELIMITER ;
+
+
+
+
+INSERT INTO movimentacao (tipo_movimento, produto, quantidade) VALUES ('C', '003', 100);
+INSERT INTO movimentacao (tipo_movimento, produto, quantidade) VALUES ('V', '003', 75);
+
+
+
+
+DELIMITER $
+CREATE TRIGGER t_movimentacao_delete BEFORE DELETE ON movimentacao
+FOR EACH ROW BEGIN
+    IF OLD.tipo_movimento = 'C' THEN
+        UPDATE produtos SET estoque = estoque - OLD.quantidade WHERE codigo = OLD.produto;
+    ELSE
+        UPDATE produtos SET estoque = estoque + OLD.quantidade WHERE codigo = OLD.produto;
+    END IF;
+END $
+DELIMITER ;
+
+
+
+
+DELETE FROM movimentacao WHERE codigo=5;
+DELETE FROM movimentacao WHERE codigo=4;
+DELETE FROM movimentacao;
+
+INSERT INTO movimentacao (tipo_movimento, produto, quantidade) 
+VALUES ('C','001',127), ('C','002',45), ('V','001',22);
+
+
+
+
+DELIMITER $
+CREATE PROCEDURE verQuantProduto(IN cod CHAR, OUT quant FLOAT)
+BEGIN
+    SELECT estoque INTO quant FROM produtos WHERE codigo=@cod;
+END$
+DELIMITER ;
+
+
+
+
+
+SET @qtd=0;
+SET @cod='002';
+CALL verQuantProduto(@cod,@qtd);
+
+SELECT @qtd;

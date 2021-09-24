@@ -1,0 +1,107 @@
+SELECT moedas.moenome, cotacoes.cotvalor FROM moedas, cotacoes
+WHERE moedas.moecodigo=cotacoes.moecodigo;
+
+
+
+SELECT * FROM moedas;
+
+SELECT moedas.moenome, cotacoes.cotvalor FROM moedas   INNER JOIN cotacoes ON moedas.moecodigo=cotacoes.moecodigo;
+SELECT moedas.moenome, cotacoes.cotvalor FROM moedas   LEFT JOIN  cotacoes ON moedas.moecodigo=cotacoes.moecodigo;
+SELECT moedas.moenome, cotacoes.cotvalor FROM cotacoes RIGHT JOIN moedas   ON moedas.moecodigo=cotacoes.moecodigo;
+
+
+
+
+
+SELECT titulo, 
+	CASE idioma_id WHEN 1 THEN 'Inglês'
+			WHEN 2 THEN 'Italiano'
+			WHEN 3 THEN 'Japonês'
+			WHEN 4 THEN 'Chinês'
+			WHEN 5 THEN 'Francês'
+			WHEN 6 THEN 'Alemão'
+			ELSE 'Desconhecido'
+	END AS idioma
+FROM filme;
+
+
+
+
+(SELECT titulo FROM filme WHERE titulo LIKE 'A%') 
+UNION 
+(SELECT primeiro_nome FROM ator WHERE primeiro_nome LIKE 'B%')
+UNION
+(SELECT cidade FROM cidade WHERE cidade LIKE 'C%');
+
+
+
+
+SELECT * INTO OUTFILE 'd:/dados.csv' FIELDS TERMINATED BY ';' FROM moedas ORDER BY moenome;
+
+LOAD DATA INFILE 'd:/dados.csv' INTO TABLE moedas2 FIELDS TERMINATED BY 
+
+
+
+
+CREATE VIEW consulta_cotacoes AS
+SELECT moeda`consulta_cotacoes`s.moenome AS 'Moeda', cotacoes.cotdata AS 'Data', cotacoes.cotvalor AS 'Valor'
+FROM moedas, cotacoes 
+WHERE moedas.moecodigo=cotacoes.moecodigo 
+ORDER BY moedas.moenome, cotacoes.cotdata;
+
+INSERT INTO cotacoes (cotdata, cotvalor, moecodigo) VALUES ('2021-06-24',4.97,3);
+
+SELECT * FROM consulta_cotacoes WHERE valor > 5;
+
+
+
+
+
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE atualizar_preco (IN percentual FLOAT)
+BEGIN
+
+UPDATE filme SET preco_da_locacao = preco_da_locacao + (preco_da_locacao * percentual / 100);
+
+END $$
+
+DELIMITER ;
+
+
+
+CALL atualizar_preco(50);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE multiplica_por_2 (INOUT valor INT)
+BEGIN
+
+SET valor = valor * 2;
+
+END $$
+
+DELIMITER ;
+
+
+
+SET @numero = 10;
+CALL multiplica_por_2(@numero);
+SELECT @numero;

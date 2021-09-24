@@ -1,0 +1,40 @@
+Criar repositorio ->  git init.
+
+Voltar a pasta anterior cd ..
+
+compilar arquivo -> javac
+
+atualiza repositorio
+git pull
+
+
+Clonando -> Git clone + link do arquivo que quer clonar.
+
+Fazer verificação -> git status.
+
+Limpar terminal -> clear
+
+criar um arquivo gitignore e colocar os arquivos que não quer que apareça no terminal no STATUS.
+
+Adicionan add <nome do arquivo> / para dicionar todos os arquivos -> git add .
+
+Enviando mudanças para o repositório remoto -> git push origin <nome_da_branch>
+
+criando uma nova branch -> git checkout -b feature_nome
+
+Alterando entre branchs -> git checkout nome_branch
+
+Deletando uma branch -> git checkout -d feature_nome
+
+Para verificar as branchs -> git branch
+
+Comando para verificar em qual link do GitHub esta atrelado -> git remote -v
+
+Para fazer busca do repositorio do github -> git fetch origin
+
+Mesclando branchs (merge) -> git merge nome_branch
+
+verificar as mudanças feitas -> git diff
+
+Para não aparecer um arquivo caso não queira -> criar um arquivo chamado -> .gitignore -> exemplo: *class
+Git commit –m “mensagem” (faz o commit)

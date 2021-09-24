@@ -1,0 +1,15 @@
+
+ver se esta na branch certa
+
+git add .
+
+git commit
+
+git push origin KhaueMaia
+
+//ignora todas suas alterações podendo fazer git pull ou trocar de branch para voce continuar trabalhando
+git checkout . 
+
+
+//è para empilhar seus commits ou seja salvar suas alterações para voce mandar outra hora
+git stash 
